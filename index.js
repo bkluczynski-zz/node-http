@@ -17,11 +17,11 @@ const server = http.createServer((req, res) => {
     const fileExt = path.extname(filePath);
     console.log('fileExtension', fileExt);
     if (fileExt === '.html') {
-      fs.exists(filePath, (exists) => {
-        if (!exists){
+      fs.access(filePath, (err) => {
+        if (err){
           res.statusCode = 404;
           res.setHeader('Content-Type', 'text/html');
-          res.end('<html><body><h1>Error 404: ' + fileUrl + ' not found</h1></body></html>');
+          res.end(`<html><body><h1>${err.message}</h1></body></html>`);
 
           return;
         }
